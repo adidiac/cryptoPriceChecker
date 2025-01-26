@@ -1,3 +1,4 @@
 requests
 sendgrid
 python-http-client
+python-dotenv
