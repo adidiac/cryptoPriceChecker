@@ -1,0 +1,3 @@
+requests
+sendgrid
+python-http-client
