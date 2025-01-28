@@ -12,9 +12,6 @@ load_dotenv()
 
 CHECK_INTERVAL = 60  # seconds to wait between checks
 
-# You could store these in environment variables, or just edit here:
-CROSS_DOWN_THRESHOLD = 3.0
-CROSS_UP_THRESHOLD   = 4.0
 PRICE_DIFF_TRIGGER   = 0.1  # Alert if price changes by >= $1 from last_price
 
 # ========== UTILITY FUNCTIONS ==========
@@ -87,24 +84,6 @@ def main():
                     f"Previous price: ${last_price:.2f}\n"
                     f"Current price:  ${current_price:.2f}\n"
                     f"Difference is ${abs(current_price - last_price):.2f}, which is >= ${PRICE_DIFF_TRIGGER}.\n"
-                )
-                send_alert_email(subject, body)
-
-            # 2) Check if we've crossed below $3
-            if last_price >= CROSS_DOWN_THRESHOLD and current_price < CROSS_DOWN_THRESHOLD:
-                subject = "XRP Crossed Below $3"
-                body = (
-                    f"XRP was ${last_price:.2f} (>=3) and now is ${current_price:.2f} (<3).\n"
-                    f"Threshold: ${CROSS_DOWN_THRESHOLD}\n"
-                )
-                send_alert_email(subject, body)
-
-            # 3) Check if we've crossed above $4
-            if last_price < CROSS_UP_THRESHOLD and current_price >= CROSS_UP_THRESHOLD:
-                subject = "XRP Crossed Above $4"
-                body = (
-                    f"XRP was ${last_price:.2f} (<4) and now is ${current_price:.2f} (>=4).\n"
-                    f"Threshold: ${CROSS_UP_THRESHOLD}\n"
                 )
                 send_alert_email(subject, body)
 
