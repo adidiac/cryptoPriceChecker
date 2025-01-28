@@ -66,7 +66,7 @@ def send_alert_email(subject, content):
 def main():
     print("Starting XRP price monitor...")
 
-    last_price = None
+    last_price = 3.0
 
     while True:
         try:
@@ -77,8 +77,11 @@ def main():
             continue
 
         if last_price is not None:
-            # 1) Check if the absolute difference is >= 1 dollar
-            if abs(current_price - last_price) >= PRICE_DIFF_TRIGGER:
+            
+            current_price_one_decimal = round(current_price, 1)
+            last_price_one_decimal = round(last_price, 1)
+
+            if abs(current_price_one_decimal - last_price_one_decimal) >= PRICE_DIFF_TRIGGER:
                 subject = f"XRP Price Changed by ${PRICE_DIFF_TRIGGER}+"
                 body = (
                     f"Previous price: ${last_price:.2f}\n"
@@ -86,9 +89,10 @@ def main():
                     f"Difference is ${abs(current_price - last_price):.2f}, which is >= ${PRICE_DIFF_TRIGGER}.\n"
                 )
                 send_alert_email(subject, body)
+                last_price = current_price
 
         # Update last_price for next loop
-        last_price = current_price
+        
 
         print(f"[INFO] Current XRP price: ${current_price:.3f}")
         time.sleep(CHECK_INTERVAL)
